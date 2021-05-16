@@ -1,14 +1,14 @@
 const express = require('express')
 const router = express.Router()
-const Subscriber =  require('../models/subscriber')
+const ReminderObj =  require('../models/reminderModel')
 
 // getting all
 router.get  ('/', async (req,res) => 
                 {
                     try 
                     {
-                        const subscribers = await Subscriber.find()
-                        res.json(subscribers)
+                        const getRreminder = await ReminderObj.find()
+                        res.json(getRreminder)
                     } 
                     catch (error) 
                     {
@@ -17,25 +17,24 @@ router.get  ('/', async (req,res) =>
                 }
             )
 // getting one
-router.get  ('/:id', getSubscriber, (req,res) => 
+router.get  ('/:id', getReminder, (req,res) => 
                 {
                     //sends person 1
-                    // res.send(res.subscriber.name)
+                    // res.send(res.reminder.ReminderText)
                     //sends subcriber object data
-                    res.json(res.subscriber)
+                    res.json(res.reminder)
                 }
             )
 // creating one
 router.post ('/', async (req,res) => 
                 {
-                    const subscriber = new Subscriber({
-                        name: req.body.name,
-                        subscribedToChannel: req.body.subscribedToChannel
+                    const createReminder = new ReminderObj({
+                        ReminderText: req.body.ReminderText
                     })
                     try 
                     {
-                        const newSubSciber = await subscriber.save()
-                        res.status(201).json(newSubSciber)
+                        const newReminder = await createReminder.save()
+                        res.status(201).json(newReminder)
                     }
                     catch (error) 
                     {
@@ -44,19 +43,17 @@ router.post ('/', async (req,res) =>
                 }
             )
 // updates one
-router.patch('/:id', getSubscriber, async(req,res) => 
+router.patch('/:id', getReminder, async(req,res) => 
                 {
-                    if (req.body.name != null) {
-                        res.subscriber.name = req.body.name
-                    }
-                    if (req.body.subscribedToChannel != null) {
-                        res.subscriber.subscribedToChannel = req.body.subscribedToChannel
+                    if (req.body.ReminderText != null) 
+                    {
+                        res.reminder.ReminderText = req.body.ReminderText
                     }
 
                     try 
                     {
-                        const updatedSubscriber = await res.subscriber.save()
-                        res.json(updatedSubscriber)
+                        const updatedReminder = await res.reminder.save()
+                        res.json(updatedReminder)
                     } 
                     catch (error) 
                     {
@@ -65,13 +62,13 @@ router.patch('/:id', getSubscriber, async(req,res) =>
                 }
             )
 // delete one
-router.delete('/:id', getSubscriber, async (req,res) => 
+router.delete('/:id', getReminder, async (req,res) => 
                 {
                     try 
                     {
-                        await res.subscriber.remove()
-                        res.json({message: "Deleted subscriber"})
-                    } 
+                        await res.reminder.remove()
+                        res.json({message: "Deleted reminder"})
+                    }
                     catch (error) 
                     {
                         res.status(500).json({message: error.message})
@@ -79,15 +76,15 @@ router.delete('/:id', getSubscriber, async (req,res) =>
                 }
             )
 
-async function getSubscriber(req, res, next) 
+async function getReminder(req, res, next) 
 {
-    let subscriber
+    let reminder
     try 
     {
-        subscriber = await Subscriber.findById(req.params.id)
-        if (subscriber == null) 
+        reminder = await ReminderObj.findById(req.params.id)
+        if (reminder == null) 
         {
-            return res.status(404).json({ message: 'Cannot find subscriber' })
+            return res.status(404).json({ message: 'Cannot find Reminder' })
         }
     }   
     catch (error)
@@ -95,8 +92,8 @@ async function getSubscriber(req, res, next)
         return res.status(500).json({ message: error.message })
     }
 
-    res.subscriber = subscriber
+    res.reminder = reminder
     next()
 }
 
-            module.exports = router
+module.exports = router
