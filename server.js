@@ -17,6 +17,7 @@ app.use(express.json())
 // const reminderRouter = require('./routes/reminderRoute')
 // app.use('/reminderRoute', reminderRouter)
 
+//we deleted covid!!!!
 // const feedbackRouter = require('./routes/feedbackRoute')
 // app.use('/feedbackRoute', feedbackRouter)
 
