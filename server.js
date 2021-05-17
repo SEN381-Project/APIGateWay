@@ -21,6 +21,6 @@ app.use(express.json())
 // app.use('/feedbackRoute', feedbackRouter)
 
 const followUpRouter = require('./routes/followUpRoute')
-app.use('/followUpRoute', followUpRouter)
+app.use('/db', followUpRouter)
 
 app.listen(3000, () => console.log('Server Started'))
